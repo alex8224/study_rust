@@ -64,4 +64,42 @@ pub mod test {
     fn test_unsized() {
         debug_ref("pass str with unsized!");
     }
+
+    struct Sample {
+    }
+
+    #[test]
+    fn test_size_assert() {
+        const WIDTH:usize = size_of::<&()>();
+        const DOUBLE_WIDTH:usize = 2 * WIDTH;
+        println!("{}", size_of::<Sample>());
+        assert_eq!(WIDTH, size_of::<&Sample>());
+    }
+
+
+    struct ByteIter<'a> {
+        remainer: &'a [u8]
+    }
+
+    impl<'a> ByteIter<'a> {
+        fn next(&mut self) -> Option<&'a u8> {
+            if self.remainer.is_empty() {
+                None
+             }else {
+                 let byte = &self.remainer[0];
+                 self.remainer = &self.remainer[1..];
+                 Some(byte)
+             }
+            }
+        }
+
+        #[test]
+        fn test_lifetime() {
+            let mut bytes = ByteIter{remainer: b"12"};
+            let byte = &bytes.next();
+            let byte2 = &bytes.next();
+            if byte == byte2 {
+                println!("equals both byte")
+            }
+        }
 } 

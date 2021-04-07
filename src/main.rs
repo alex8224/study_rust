@@ -1,12 +1,14 @@
 #![feature(allocator_api)]
 extern crate encoding;
 extern crate md5;
+extern crate wry;
 
 use std::{env, process::Command, thread::sleep, time::Duration};
 use encoding::{all::GBK, DecoderTrap, Encoding};
 use rust_a::{public::*, util::*};
 use std::mem::size_of_val;
 
+#[test]
 fn json_test() {
     let mut pnt_list: Vec<Point> = Vec::new();
     let point = Point { x: 10, y: 20, name: "张", other: None };
@@ -24,11 +26,22 @@ fn json_test() {
     println!("point memsize is {}", size_of_val(&empty));
 }
 
-fn main() {
-    println!("blblblblb");
+use wry::{Application, Result};
+
+fn main() -> wry::Result<()>{
+    test_wry()
 }
 
-#[cfg(test)]
+fn test_wry() ->wry::Result<()> {
+
+let mut app = Application::new()?;
+app.add_window(Default::default())?;
+app.run();
+
+Ok(())
+}
+
+#[test]
 fn test_common() {
 
     let args: Vec<String> = env::args().collect();
