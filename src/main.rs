@@ -25,7 +25,12 @@ fn json_test() {
 }
 
 fn main() {
-    json_test();
+    println!("blblblblb");
+}
+
+#[cfg(test)]
+fn test_common() {
+
     let args: Vec<String> = env::args().collect();
     let mut secs = 1;
     if args.len() == 2 {
