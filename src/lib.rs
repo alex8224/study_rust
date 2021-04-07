@@ -28,14 +28,14 @@ pub mod util {
 
 #[cfg(test)]
 pub mod test {
-    use std::collections::HashMap;
+    use std::{collections::HashMap, mem::size_of};
     use std::hash::BuildHasherDefault;
     use std::time::SystemTime;
     use hashers::fx_hash::FxHasher;
 
     #[test]
     fn test_map() {
-        let size = 10_000_000;
+        let size = 10_000_00;
         let mut map = HashMap::<i32, &str, _>::with_capacity_and_hasher(size, BuildHasherDefault::<FxHasher>::default());
         let hello = "hello";
         let start = SystemTime::now();
@@ -45,4 +45,23 @@ pub mod test {
         println!("duration time is {}ms", start.elapsed().unwrap().as_millis());
         map.clear();
     }
-}
+
+    use std::fmt::Debug;
+    fn debug<T: Debug>(t: T) {
+        println!("{:?}", t);
+    }
+
+    fn debug_ref<T: Debug + ?Sized>(t: &T) {
+        println!("{:?}", t);
+    }
+    
+    #[test]
+    fn test_sized() {
+        debug("pass str with sized");
+    }
+
+    #[test]
+    fn test_unsized() {
+        debug_ref("pass str with unsized!");
+    }
+} 
