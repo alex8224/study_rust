@@ -1,7 +1,6 @@
 use redis::{self, transaction, Commands};
 
 use std::collections::HashMap;
-use std::env;
 
 /// This function demonstrates how a return value can be coerced into a
 /// hashmap of tuples.  This is particularly useful for responses like
@@ -36,6 +35,45 @@ fn do_print_max_entry_limits(con: &mut redis::Connection) -> redis::RedisResult<
     );
 
     Ok(())
+}
+
+
+fn write_java_class(bytes: &[u8]) {
+    use std::{fs::File, io::Write};
+    use uuid::Uuid;
+    let filename = format!("{}.class", Uuid::new_v4().to_string());
+    let mut cls_file = File::create(&filename).unwrap();
+    cls_file.write(bytes).unwrap();
+    println!("write cls file {}", filename);
+}
+
+fn do_basic_set_get(con: &mut redis::Connection) -> redis::RedisResult<()> {
+   con.set("a", "11")?; 
+   let ret_val: String = con.get("a")?;
+   println!("get a val is {} , try sadd cmd:", ret_val);
+   con.sadd("supcom:name:list", vec!["aaa", "ffff"])?;
+   let name_list: Vec<String> = con.smembers("supcom:name:list")?;
+   for name in &name_list {
+       println!("get name {}", name);
+   }
+
+   let all_keys : Vec<String> = con.keys("*")?;
+   all_keys.into_iter().for_each(|k| {
+       let type_code: String = redis::cmd("type").arg(&k).query(con).unwrap();
+       println!("get key === {} type is {}", &k, &type_code);
+       if type_code == "string" {
+           let ret: Vec<u8> = con.get(&k).unwrap();
+           write_java_class(&ret);
+           println!("key {} val is ", k);
+       }else if type_code == "hash" {
+           let map_val: std::collections::HashMap<String, Vec<u8>> = con.hgetall(&k).unwrap();
+           map_val.into_iter().for_each(|e| {
+               write_java_class( &e.1);
+               println!("key {} filed {} ", k, e.0);
+           });
+       }
+   });
+   Ok(())
 }
 
 /// This is a pretty stupid example that demonstrates how to create a large
@@ -134,9 +172,6 @@ fn do_atomic_increment(con: &mut redis::Connection) -> redis::RedisResult<()> {
     Ok(())
 }
 
-fn do_basic_set_get(con: &mut redis::Connection) -> redis::RedisResult<()> {
-    
-}
 
 /// Runs all the examples and propagates errors up.
 pub fn do_redis_code(url: &str) -> redis::RedisResult<()> {
@@ -144,6 +179,7 @@ pub fn do_redis_code(url: &str) -> redis::RedisResult<()> {
     let client = redis::Client::open(url)?;
     let mut con = client.get_connection()?;
 
+    do_basic_set_get(&mut con)?;
     // read some config and print it.
     do_print_max_entry_limits(&mut con)?;
 
