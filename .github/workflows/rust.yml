@@ -20,7 +20,9 @@ jobs:
     - name: install target
       run: rustup target add x86_64-pc-windows-gnu
     - name: set toolchain
-      run: rustup toolchain install stable-x86_64-pc-windows-gnu
+      run: rustup toolchain install nightly-x86_64-pc-windows-gnu
+    - name: nightly build
+      run: rustup default nightly-x86_64-pc-windows-gnu
     - name: Build
       run: cargo build --target=x86_64-pc-windows-gnu --verbose
     - name: Run tests
