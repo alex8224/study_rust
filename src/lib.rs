@@ -1,4 +1,7 @@
+pub mod basic;
+
 extern crate hashers;
+extern crate redis;
 
 pub mod public {
     use serde::{Serialize, Deserialize};
@@ -11,7 +14,6 @@ pub mod public {
         pub other: Option<Box<Point<'a>>>,
     }
 }
-
 
 pub mod util {
     use std::time::{SystemTime, UNIX_EPOCH};
@@ -32,6 +34,7 @@ pub mod test {
     use std::hash::BuildHasherDefault;
     use std::time::SystemTime;
     use hashers::fx_hash::FxHasher;
+    use redis::{Commands, Connection};
 
     #[test]
     fn test_map() {
@@ -102,4 +105,19 @@ pub mod test {
                 println!("equals both byte")
             }
         }
+
+
+        fn do_redis_op(conn: &mut Connection) {
+            let _: () = conn.set("a", "1").unwrap();
+            println!("seted.!");
+        }
+        
+        #[test]
+        fn test_redis() {
+            use std::time::Duration;
+            let conn = redis::Client::open("redis://192.168.10.217:6379/0").expect("get redis conn failed!");
+            let mut real_conn = conn.get_connection_with_timeout(Duration::from_secs(1)).unwrap();
+            do_redis_op(&mut real_conn);
+        }
 } 
+

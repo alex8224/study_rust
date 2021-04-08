@@ -27,23 +27,32 @@ fn json_test() {
 }
 
 use wry::{Application, Result};
+use rust_a::basic::do_redis_code;
 
-fn main() -> wry::Result<()>{
-    test_wry()
+fn main() {
+    // at this point the errors are fatal, let's just fail hard.
+    let url = if env::args().nth(1) == Some("--tls".into()) {
+        "rediss://192.168.10.217:6379/#insecure"
+    } else {
+        "redis://192.168.10.217:6379/"
+    };
+    match do_redis_code(url) {
+        Err(err) => {
+            println!("Could not execute example:");
+            println!("  {}: {}", err.category(), err);
+        }
+        Ok(()) => {}
+    }
 }
-
-fn test_wry() ->wry::Result<()> {
-
-let mut app = Application::new()?;
-app.add_window(Default::default())?;
-app.run();
-
-Ok(())
+fn test_wry() -> wry::Result<()> {
+    let mut app = Application::new()?;
+    app.add_window(Default::default())?;
+    app.run();
+    Ok(())
 }
 
 #[test]
 fn test_common() {
-
     let args: Vec<String> = env::args().collect();
     let mut secs = 1;
     if args.len() == 2 {
@@ -51,7 +60,7 @@ fn test_common() {
     }
     let duration = Duration::from_secs(secs);
     let mut hex = String::from("a");
-    loop {
+    for _ in 1..2 {
         let cmd = Command::new("tasklist").output().expect("spawn process failed!");
         let cmd_out = GBK.decode(cmd.stdout.as_slice(), DecoderTrap::Ignore).expect("decode output failed!");
         let mut str_array = cmd_out.split("\r\n").into_iter().skip(4)
