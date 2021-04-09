@@ -1,5 +1,6 @@
 pub mod basic;
 pub mod webserver;
+pub mod map;
 
 extern crate hashers;
 extern crate redis;
