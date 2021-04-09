@@ -1,7 +1,7 @@
 #![feature(allocator_api)]
 extern crate encoding;
 extern crate md5;
-extern crate wry;
+// extern crate wry;
 
 use encoding::{all::GBK, DecoderTrap, Encoding};
 use rust_a::{public::*, util::*};
@@ -38,7 +38,7 @@ fn json_test() {
 }
 
 use rust_a::basic::do_redis_code;
-use wry::{Application, Result};
+// use wry::{Application, Result};
 
 fn main() {
     let args:Vec<String> = env::args().collect();
@@ -56,12 +56,12 @@ fn main() {
         }
 }
 }
-fn test_wry() -> wry::Result<()> {
-    let mut app = Application::new()?;
-    app.add_window(Default::default())?;
-    app.run();
-    Ok(())
-}
+// fn test_wry() -> wry::Result<()> {
+//     let mut app = Application::new()?;
+//     app.add_window(Default::default())?;
+//     app.run();
+//     Ok(())
+// }
 
 #[test]
 fn test_common() {
