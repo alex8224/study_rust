@@ -88,7 +88,10 @@ impl ConnectionHolder<redis::Connection> {
 fn test_create_connectholder() {
     let mut holder = ConnectionHolder::new();
     holder.put("redis://127.0.0.1:6379/1").unwrap();
-    println!("{}, db size {}", holder.size(), holder.list_db());
+    std::thread::sleep(std::time::Duration::from_secs(1));
+    drop(holder);
+    std::thread::sleep(std::time::Duration::from_secs(1));
+    println!("{},  ", "blblbl");
 }
 
 struct cmd {}

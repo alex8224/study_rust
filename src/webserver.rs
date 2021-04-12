@@ -1,5 +1,4 @@
-
-#[cfg(test)]
+// #[cfg(test)]
 pub mod test_salvo {
 
     use salvo::prelude::*;
@@ -257,10 +256,9 @@ hello world this is from salvo web framework hello world this is from salvo web 
 "
     }
 
-
-    #[tokio::test]
+    // #[tokio::test]
     async fn test_hello() {
         let router = Router::new().path("/hello").get(hello_world);
-        Server::new(router).bind(([0,0,0,0], 7878)).await;
-    } 
+        Server::new(router).bind(([0, 0, 0, 0], 7878)).await;
+    }
 }

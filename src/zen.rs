@@ -48,3 +48,24 @@ fn test_dispatch() {
     static_dispatch(&i);
     dyn_dispatch(&i2);
 }
+
+struct Margin {
+    a: i32,
+    b: i32,
+    c: char,
+}
+
+#[test]
+fn test_margin() {
+    println!("size of {} ", std::mem::size_of::<Margin>());
+}
+
+#[test]
+fn test_owner_move() {
+    let x = 1;
+    let y = Box::new(33);
+    println!("{:p}", y);
+    let x1 = x;
+    let y1 = y;
+    println!("new x {}, y {}", x, y1);
+}
