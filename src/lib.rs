@@ -4,6 +4,7 @@ pub mod map;
 pub mod pointer;
 pub mod webserver;
 pub mod live;
+pub mod redis_conn;
 
 extern crate hashers;
 extern crate redis;
