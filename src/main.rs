@@ -37,8 +37,9 @@ fn json_test() {
     println!("point memsize is {}", size_of_val(&empty));
 }
 
-use rust_a::basic::do_redis_code;
+use rust_a::redis_mo::do_redis_code;
 // use wry::{Application, Result};
+
 
 fn main() {
     let args:Vec<String> = env::args().collect();
