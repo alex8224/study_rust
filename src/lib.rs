@@ -1,10 +1,11 @@
-pub mod redis_mo;
 pub mod clourse;
+pub mod live;
 pub mod map;
 pub mod pointer;
-pub mod webserver;
-pub mod live;
 pub mod redis_conn;
+pub mod redis_mo;
+pub mod webserver;
+pub mod zen;
 
 extern crate hashers;
 extern crate redis;
