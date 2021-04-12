@@ -1,4 +1,7 @@
 pub mod redis_mo;
+pub mod clourse;
+pub mod map;
+pub mod pointer;
 pub mod webserver;
 pub mod live;
 

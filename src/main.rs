@@ -5,8 +5,8 @@ extern crate md5;
 
 use encoding::{all::GBK, DecoderTrap, Encoding};
 use rust_a::{public::*, util::*};
-use std::{mem::size_of_val, process::exit};
 use std::{env, process::Command, thread::sleep, time::Duration};
+use std::{mem::size_of_val, process::exit};
 
 #[test]
 fn json_test() {
@@ -42,10 +42,10 @@ use rust_a::redis_mo::do_redis_code;
 
 
 fn main() {
-    let args:Vec<String> = env::args().collect();
+    let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
         println!("need redis url somethisn like: redis://host:port/db")
-    }else {
+    } else {
         let url = args[1].as_str();
         println!("redis url is {}", url);
         match do_redis_code(url) {
@@ -55,7 +55,7 @@ fn main() {
             }
             Ok(()) => {}
         }
-}
+    }
 }
 // fn test_wry() -> wry::Result<()> {
 //     let mut app = Application::new()?;
