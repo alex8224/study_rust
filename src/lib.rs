@@ -2,11 +2,12 @@ extern crate hashers;
 extern crate redis;
 
 pub mod clourse;
+pub mod fullindex;
 pub mod live;
 pub mod map;
+pub mod obj_ref;
 pub mod pointer;
 pub mod redis_conn;
-pub mod fullindex;
 pub mod redis_mo;
 pub mod zen;
 
@@ -23,8 +24,8 @@ pub mod public {
 }
 
 pub mod util {
-    use std::{fs::File, io::Write};
     use std::time::{SystemTime, UNIX_EPOCH};
+    use std::{fs::File, io::Write};
 
     pub fn write_log(data: &str) {
         let now = SystemTime::now()
@@ -41,10 +42,10 @@ pub mod util {
 
 #[cfg(test)]
 pub mod test {
-    use std::{collections::HashMap, mem::size_of};
     use std::fmt::Debug;
     use std::hash::BuildHasherDefault;
     use std::time::SystemTime;
+    use std::{collections::HashMap, mem::size_of};
 
     use hashers::fx_hash::FxHasher;
     use redis::{Commands, Connection};

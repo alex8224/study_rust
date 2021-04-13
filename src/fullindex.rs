@@ -90,9 +90,9 @@ pub fn call_full_basic() {
                     body => format!("正文正文正文正文正文正文{}", i)
                 ));
 
-        if i % 20000 == 0 {
-            index_writer.commit().unwrap();
-        }
+        // if i % 50000 == 0 {
+        //     index_writer.commit().unwrap();
+        // }
     }
 
     println!("index 100w duration is {}ms", now.elapsed().unwrap().as_millis());

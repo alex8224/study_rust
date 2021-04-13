@@ -68,4 +68,6 @@ fn test_owner_move() {
     let x1 = x;
     let y1 = y;
     println!("new x {}, y {}", x, y1);
+    let mut list = Vec::<i32>::new();
+    list.push(11);
 }
