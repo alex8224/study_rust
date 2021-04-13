@@ -1,4 +1,3 @@
-#![feature(allocator_api)]
 extern crate encoding;
 extern crate md5;
 // extern crate wry;
@@ -88,7 +87,7 @@ fn test_common() {
         let cmd_out = GBK
             .decode(cmd.stdout.as_slice(), DecoderTrap::Ignore)
             .expect("decode output failed!");
-        let mut str_array = cmd_out
+        let mut str_array: Vec<&str> = cmd_out
             .split("\r\n")
             .into_iter()
             .skip(4)
@@ -100,7 +99,7 @@ fn test_common() {
                     ""
                 }
             })
-            .collect::<Vec<_, _>>();
+            .collect();
         str_array.sort();
         let joined = str_array.join("\r\n");
         let tmp_hex = format!("{:x}", md5::compute(&joined));

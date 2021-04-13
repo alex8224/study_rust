@@ -1,13 +1,14 @@
 extern crate hashers;
 extern crate redis;
 
-pub mod redis_mo;
 pub mod clourse;
+pub mod live;
 pub mod map;
 pub mod pointer;
-pub mod live;
 pub mod redis_conn;
 pub mod fullindex;
+pub mod redis_mo;
+pub mod zen;
 
 pub mod public {
     use serde::{Deserialize, Serialize};
