@@ -1,14 +1,12 @@
-
 use std::{collections::HashMap, thread::current};
 
 use redis::{Commands, FromRedisValue};
 
 use crate::*;
 
-pub trait Connection { 
+pub trait Connection {
     fn init_db_info(&mut self);
 }
-
 
 #[derive(Debug)]
 struct ConnectionHolder<T: Connection> {
@@ -78,14 +76,6 @@ impl ConnectionHolder<redis::Connection> {
         let dbs: HashMap<String, usize>= redis::cmd("config").arg("GET").arg("databases").query(cur_conn).unwrap();
         *dbs.get("databases").unwrap()
     }
-    
-    fn get_cfg<T: FromRedisValue>(&mut self, key: &str) -> Option<&T> {
-        let mut cur_conn = &mut self.conns[self.current as usize];
-        let cfg: HashMap<String, T> = redis::cmd("config").arg("get").arg(key).query(cur_conn).unwrap();
-        let val = cfg.get(key).unwrap();
-        let t = val.to_owned();
-        Some(t)
-    }
 }
 
 
@@ -94,9 +84,4 @@ fn test_create_connectholder() {
     let mut holder = ConnectionHolder::new();
     holder.put("redis://192.168.10.217:6379/1").unwrap();
     println!("{}, db size {}", holder.size(), holder.list_db());
-    
-    let dbfile:String  = holder.get_cfg("dbfilename");
-    // let dbname = dbfile.get("dbfilename").unwrap();
-    println!("dbfile name is {}", dbfile);
-    
  }

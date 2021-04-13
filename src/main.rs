@@ -3,10 +3,13 @@ extern crate encoding;
 extern crate md5;
 // extern crate wry;
 
-use encoding::{all::GBK, DecoderTrap, Encoding};
-use rust_a::{public::*, util::*};
 use std::{env, process::Command, thread::sleep, time::Duration};
 use std::{mem::size_of_val, process::exit};
+
+use encoding::{all::GBK, DecoderTrap, Encoding};
+
+use rust_a::{public::*, util::*};
+use rust_a::redis_mo::do_redis_code;
 
 #[test]
 fn json_test() {
@@ -37,11 +40,10 @@ fn json_test() {
     println!("point memsize is {}", size_of_val(&empty));
 }
 
-use rust_a::redis_mo::do_redis_code;
 // use wry::{Application, Result};
 
 
-fn main() {
+fn call_redis() {
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
         println!("need redis url somethisn like: redis://host:port/db")
@@ -56,6 +58,12 @@ fn main() {
             Ok(()) => {}
         }
     }
+}
+
+fn main() {
+    call_redis();
+    use rust_a::fullindex::call_full_basic;
+    call_full_basic();
 }
 // fn test_wry() -> wry::Result<()> {
 //     let mut app = Application::new()?;

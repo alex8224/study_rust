@@ -1,13 +1,13 @@
+extern crate hashers;
+extern crate redis;
+
 pub mod redis_mo;
 pub mod clourse;
 pub mod map;
 pub mod pointer;
-pub mod webserver;
 pub mod live;
 pub mod redis_conn;
-
-extern crate hashers;
-extern crate redis;
+pub mod fullindex;
 
 pub mod public {
     use serde::{Deserialize, Serialize};
@@ -22,8 +22,8 @@ pub mod public {
 }
 
 pub mod util {
-    use std::time::{SystemTime, UNIX_EPOCH};
     use std::{fs::File, io::Write};
+    use std::time::{SystemTime, UNIX_EPOCH};
 
     pub fn write_log(data: &str) {
         let now = SystemTime::now()
@@ -40,11 +40,13 @@ pub mod util {
 
 #[cfg(test)]
 pub mod test {
-    use hashers::fx_hash::FxHasher;
-    use redis::{Commands, Connection};
+    use std::{collections::HashMap, mem::size_of};
+    use std::fmt::Debug;
     use std::hash::BuildHasherDefault;
     use std::time::SystemTime;
-    use std::{collections::HashMap, mem::size_of};
+
+    use hashers::fx_hash::FxHasher;
+    use redis::{Commands, Connection};
 
     #[test]
     fn test_map() {
@@ -65,7 +67,6 @@ pub mod test {
         map.clear();
     }
 
-    use std::fmt::Debug;
     fn debug<T: Debug>(t: T) {
         println!("{:?}", t);
     }
