@@ -147,7 +147,7 @@ fn write_file(data: &[u8]) {
 #[test]
 fn test_any_cmd_with_strargs() -> RedisResult<()> {
     let mut holder = ConnectionHolder::new();
-    holder.put("redis://192.168.10.217:6379/1")?;
+    holder.put("redis://192.168.10.217:6379/0")?;
     holder.query("set", vec!["a", "1"])?;
     let get_val = holder.query::<String>("get", vec!["a"])?;
     println!("get val is {}", get_val);
@@ -156,6 +156,17 @@ fn test_any_cmd_with_strargs() -> RedisResult<()> {
         "after del then get val is {}",
         holder.query::<String>("get", vec!["a"]).is_ok()
     );
+
+    let incr:u32 = holder.query("incr", vec!["incr_key"])?;
+    println!("incr val is {}", incr);
+
+    let decr: u32 = holder.query("decr", vec!["incr_key"])?;
+    println!("incr val is {} after decr", decr);
+
+    let _: u8 = holder.query("hset", vec!["myset", "name", "啧啧啧"])?;
+    let hset_val:String = holder.query("hget", vec!["myset", "name"])?;
+    println!("hset val is {}", hset_val);
+    let _: u8 = holder.query("hdel", vec!["myset", "name"])?;
 
     let keys: Vec<String> = holder.query("keys", vec!["*"])?;
     for i in 0..keys.len() {
