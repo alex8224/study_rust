@@ -9,6 +9,8 @@ pub mod pointer;
 pub mod redis_conn;
 pub mod redis_mo;
 pub mod zen;
+pub mod cli;
+pub mod highlight;
 
 pub mod public {
     use serde::{Deserialize, Serialize};
