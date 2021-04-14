@@ -5,7 +5,6 @@ pub mod clourse;
 pub mod fullindex;
 pub mod live;
 pub mod map;
-pub mod obj_ref;
 pub mod pointer;
 pub mod redis_conn;
 pub mod redis_mo;
