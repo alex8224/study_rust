@@ -129,13 +129,12 @@ fn detect_java_ver(bin: &[u8]) -> (&str, u16) {
     let magic = &bin[0..2];
     if magic[0] == 0xac && magic[1] == 0xed {
         let minor = &bin[2..4];
-        let ver:u16 = u16::from_be_bytes([minor[0], minor[1]]);
-        ("java searialize format",  ver)
+        let ver: u16 = u16::from_be_bytes([minor[0], minor[1]]);
+        ("java searialize format", ver)
     } else {
         ("other format", 999)
     }
 }
-
 
 fn write_file(data: &[u8]) {
     use std::fs::File;
@@ -157,14 +156,14 @@ fn test_any_cmd_with_strargs() -> RedisResult<()> {
         holder.query::<String>("get", vec!["a"]).is_ok()
     );
 
-    let incr:u32 = holder.query("incr", vec!["incr_key"])?;
+    let incr: u32 = holder.query("incr", vec!["incr_key"])?;
     println!("incr val is {}", incr);
 
     let decr: u32 = holder.query("decr", vec!["incr_key"])?;
     println!("incr val is {} after decr", decr);
 
     let _: u8 = holder.query("hset", vec!["myset", "name", "啧啧啧"])?;
-    let hset_val:String = holder.query("hget", vec!["myset", "name"])?;
+    let hset_val: String = holder.query("hget", vec!["myset", "name"])?;
     println!("hset val is {}", hset_val);
     let _: u8 = holder.query("hdel", vec!["myset", "name"])?;
 
@@ -191,7 +190,7 @@ fn test_any_cmd_with_strargs() -> RedisResult<()> {
                     let (format, ver) = detect_java_ver(&f.1);
                     if format.starts_with("java") {
                         println!("\tjava objectserialize stream, ver {}", ver);
-                    }else{
+                    } else {
                         // write_file(&f.1);
                         println!("\t other format maybe str");
                     }

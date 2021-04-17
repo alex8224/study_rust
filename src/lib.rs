@@ -6,6 +6,7 @@ pub mod clourse;
 pub mod fullindex;
 pub mod highlight;
 pub mod live;
+pub mod magic_macro;
 pub mod map;
 pub mod obj_ref;
 pub mod pointer;
