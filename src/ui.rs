@@ -12,7 +12,6 @@ async fn test_basic_httpclient() -> Result<(), Box<dyn std::error::Error + Send 
     println!("response {} {:?}", resp.status(), resp.headers());
     while let Some(chunk) = resp.body_mut().data().await {
         stdout().write_all(&chunk?).await?;
-        stdout().write_all(&chunk?).await?;
     }
     Ok(())
 }
