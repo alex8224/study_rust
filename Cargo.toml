@@ -17,7 +17,7 @@ hashers = "1.0.1"
 redis = "0.20.0"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 #salvo = "0.10"
-#tokio = { version = "1", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
 rand = "0.8.3"
 tantivy = "0.14.0"
 jieba-rs = { version = "0.6.2", default-features = false }
@@ -25,7 +25,8 @@ cang-jie = "0.11.1"
 tempfile = "3.2.0"
 rustyline = "8.0.0"
 syntect = "4.4"
-
+#iced = "0.3"
+hyper = { version = "0.14", features = ["full"] }
 
 [build-dependencies]
 #windows = "0.7.0"
