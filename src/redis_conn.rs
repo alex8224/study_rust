@@ -107,7 +107,7 @@ impl ConnectionHolder {
 #[test]
 fn test_create_connectholder() {
     let mut holder = ConnectionHolder::new();
-    holder.put("redis://192.168.10.217:6379/1").unwrap();
+    holder.put("redis://127.0.0.1:6379/1").unwrap();
     let cfg_names = vec!["dbfilename", "logfile", "databases", "port", "*max*"];
     for i in 1..cfg_names.len() {
         let map = holder.get_cfg::<String>(cfg_names[i]);
@@ -146,7 +146,7 @@ fn write_file(data: &[u8]) {
 #[test]
 fn test_any_cmd_with_strargs() -> RedisResult<()> {
     let mut holder = ConnectionHolder::new();
-    holder.put("redis://192.168.10.217:6379/0")?;
+    holder.put("redis://127.0.0.1:6379/0")?;
     holder.query("set", vec!["a", "1"])?;
     let get_val = holder.query::<String>("get", vec!["a"])?;
     println!("get val is {}", get_val);

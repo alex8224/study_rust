@@ -8,6 +8,7 @@ pub mod highlight;
 pub mod live;
 pub mod magic_macro;
 pub mod map;
+pub mod micro;
 pub mod obj_ref;
 pub mod pointer;
 pub mod redis_conn;
@@ -135,8 +136,7 @@ pub mod test {
     #[test]
     fn test_redis() {
         use std::time::Duration;
-        let conn =
-            redis::Client::open("redis://192.168.10.217:6379/0").expect("get redis conn failed!");
+        let conn = redis::Client::open("redis://127.0.0.1:6379/0").expect("get redis conn failed!");
         let mut real_conn = conn
             .get_connection_with_timeout(Duration::from_secs(1))
             .unwrap();
