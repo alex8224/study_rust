@@ -50,7 +50,10 @@ fn build_full_name(person: &Person) -> String {
     let mut full_name = String::new();
     full_name.push_str(&person.first);
     full_name.push_str(" ");
-    full_name.push_str(&person.middle.unwrap().as_str());
+    if let Some(val) = &person.middle {
+        full_name.push_str(val);
+        full_name.push_str(" ");
+    }
 
     // TODO: Implement the part of this function that handles the person's middle name.
     full_name.push_str(&person.last);
@@ -79,4 +82,63 @@ fn test_option() {
         last: String::from("Jones"),
     };
     assert_eq!(build_full_name(&bob), "Robert Murdock Jones");
+}
+
+use std::fs::File;
+use std::io::{Error as IoError, Read};
+use std::path::PathBuf;
+
+#[test]
+fn test_result_type() {
+    assert!(read_file_contents("d:/test.txt".into()).is_ok());
+    assert!(read_file_contents("d:/test_not_found.txt".into()).is_err());
+}
+
+fn read_file_contents(path: PathBuf) -> Result<String, IoError> {
+    let mut string = String::new();
+
+    // TODO #1: Handle this match expression.
+    // --------------------------------------
+    // Pass the variable to the `file` variable on success, or
+    // Return from the function early if it is an error.
+    let mut file = match File::open(path) {
+        Ok(file_handle) => file_handle,
+        Err(io_error) => return Err(io_error),
+    };
+
+    // TODO #2: Handle this error.
+    // ---------------------------
+    // The success path is already filled in for you.
+    // Return from the function early if it is an error.
+
+    match file.read_to_string(&mut string) {
+        Ok(_) => (),
+        Err(io_error) => return Err(io_error),
+    };
+
+    // TODO #3: Return the `string` variable as expected by this function signature.
+    Ok(string)
+}
+
+#[test]
+fn test_lifetime() {
+    let name1 = "Joe";
+    let name2 = "Chris";
+    let name3 = "Anne";
+
+    let mut names = Vec::new();
+
+    assert_eq!("Joe", copy_and_return(&mut names, &name1));
+    assert_eq!("Chris", copy_and_return(&mut names, &name2));
+    assert_eq!("Anne", copy_and_return(&mut names, &name3));
+
+    assert_eq!(
+        names,
+        vec!["Joe".to_string(), "Chris".to_string(), "Anne".to_string()]
+    )
+}
+
+fn copy_and_return<'a>(vector: &'a mut Vec<String>, value: &'a str) -> &'a str {
+    vector.push(String::from(value));
+    vector.get(vector.len() - 1).unwrap()
 }
