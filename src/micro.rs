@@ -173,3 +173,92 @@ fn test_generic() {
     assert_eq!(Container::new(-12).value, -12);
     assert_eq!(Container::new(Some("text")).value, Some("text"));
 }
+
+struct Groups<T> {
+    inner: Vec<T>,
+    idx: usize,
+}
+
+impl<T> Groups<T> {
+    fn new(inner: Vec<T>) -> Self {
+        Groups {
+            inner: inner,
+            idx: 0,
+        }
+    }
+}
+
+impl<T: PartialEq + std::fmt::Debug> Iterator for Groups<T> {
+    type Item = Vec<T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.inner.is_empty() {
+            return None;
+        }
+        let first = &self.inner[0];
+        let mut next = 1;
+        for i in &self.inner[1..] {
+            if i == first {
+                next += 1;
+            } else {
+                break;
+            }
+        }
+
+        let ret = self.inner.drain(0..next).into_iter().collect::<Vec<_>>();
+
+        if ret.len() > 0 {
+            Some(ret)
+        } else {
+            None
+        }
+    }
+
+    // TODO: Write the rest of this implementation.
+}
+
+#[test]
+fn test_iter_generic() {
+    let char = vec!['a', 'b', 'b', 'c'];
+    assert_eq!(
+        Groups::new(char).into_iter().collect::<Vec<Vec<_>>>(),
+        vec![vec!['a'], vec!['b', 'b'], vec!['c']]
+    );
+
+    let string = vec!["123", "123", "456"];
+    assert_eq!(
+        Groups::new(string).into_iter().collect::<Vec<Vec<_>>>(),
+        vec![vec!["123", "123"], vec!["456"]]
+    );
+
+    let data = vec![4, 1, 1, 2, 1, 3, 3, -2, -2, -2, 5, 5];
+    // groups:     |->|---->|->|->|--->|----------->|--->|
+
+    assert_eq!(
+        Groups::new(data).into_iter().collect::<Vec<Vec<_>>>(),
+        vec![
+            vec![4],
+            vec![1, 1],
+            vec![2],
+            vec![1],
+            vec![3, 3],
+            vec![-2, -2, -2],
+            vec![5, 5],
+        ]
+    );
+
+    let data2 = vec![1, 2, 2, 1, 1, 2, 2, 3, 4, 4, 3];
+    // groups:      |->|---->|---->|----|->|----->|->|
+    assert_eq!(
+        Groups::new(data2).into_iter().collect::<Vec<Vec<_>>>(),
+        vec![
+            vec![1],
+            vec![2, 2],
+            vec![1, 1],
+            vec![2, 2],
+            vec![3],
+            vec![4, 4],
+            vec![3],
+        ]
+    )
+}
