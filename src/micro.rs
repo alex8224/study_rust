@@ -273,6 +273,7 @@ mod tests {
 
     #[test]
     fn is_true_when_even() {
+        println!("test even number");
         assert!(is_even(2), true);
     }
 
@@ -281,3 +282,6 @@ mod tests {
         assert!(!is_even(3), true);
     }
 }
+
+
+
