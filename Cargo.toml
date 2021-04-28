@@ -27,6 +27,7 @@ rustyline = "8.0.0"
 syntect = "4.4"
 #iced = "0.3"
 hyper = { version = "0.14", features = ["full"] }
+quick-xml = "0.22.0"
 
 [build-dependencies]
 #windows = "0.7.0"

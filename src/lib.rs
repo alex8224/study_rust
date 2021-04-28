@@ -14,6 +14,7 @@ pub mod pointer;
 pub mod redis_conn;
 pub mod redis_mo;
 pub mod ui;
+pub mod xmltest;
 pub mod zen;
 
 pub mod public {
