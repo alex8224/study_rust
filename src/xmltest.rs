@@ -3,7 +3,7 @@ extern crate serde;
 use quick_xml::events::{BytesEnd, BytesStart, Event};
 use quick_xml::Reader;
 use quick_xml::Writer;
-use std::io::Cursor;
+use std::io::{Cursor, Read};
 use std::iter;
 
 #[test]
@@ -87,5 +87,63 @@ fn test_xml_write() {
     assert_eq!(result, expected.as_bytes());
 }
 
-use quick_xml::de::{from_str, DeError};
-use serde::Deserialize;
+use minidom::Element;
+use minidom::Error;
+use minidom::Result;
+use std::fs::File;
+
+fn split_element_name<S: AsRef<str>>(s: S) -> Result<(Option<String>, String)> {
+    let name_parts = s.as_ref().split(':').collect::<Vec<&str>>();
+    match name_parts.len() {
+        2 => Ok((Some(name_parts[0].to_owned()), name_parts[1].to_owned())),
+        1 => Ok((None, name_parts[0].to_owned())),
+        _ => Err(Error::InvalidElement),
+    }
+}
+
+use std::time::SystemTime;
+// #[test]
+pub fn test_dom(cnt: u32) {
+    let mut file = File::open("c://users//administrator//desktop//1.xml").unwrap();
+    let mut buff = String::new();
+    let size = file.read_to_string(&mut buff).unwrap();
+    // println!("read {} size content {}", size, buff);
+    
+    let start = SystemTime::now();
+    let mut byteArr = Vec::new();
+    let mut reader = Reader::from_str(buff.as_str());
+    for i in 1..cnt {
+        reader.read_event(&mut byteArr).unwrap();
+    }
+    
+
+    println!("耗时{}", start.elapsed().unwrap().as_millis());
+    // let mut reader = Reader::from_str(buff.as_str());
+    // let mut byteArr = Vec::new();
+    // loop {
+    //     let e = reader.read_event(&mut byteArr).unwrap();
+    //     match e {
+    //         Event::Empty(ref e) | Event::Start(ref e) => {
+    //             let evt_name = std::str::from_utf8(e.name()).unwrap();
+    //             let (ns, ndname)  = split_element_name(evt_name).unwrap();
+    //             println!("{} \n{:?}, {}", evt_name, ns, ndname);
+    //             break;
+    //         }
+    //         Event::Eof => {
+    //             break;
+    //         }
+    //         Event::Comment { .. } => {
+    //             break;
+    //         }
+    //         Event::Text { .. }
+    //         | Event::End { .. }
+    //         | Event::CData { .. }
+    //         | Event::Decl { .. }
+    //         | Event::PI { .. }
+    //         | Event::DocType { .. } => (), // TODO: may need more errors
+    //     }
+    // }
+}
+
+#[test]
+fn test_pure_event_xml() {}

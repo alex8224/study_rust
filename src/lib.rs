@@ -17,6 +17,8 @@ pub mod ui;
 pub mod xmltest;
 pub mod zen;
 
+pub use xmltest::test_dom;
+
 pub mod public {
     use serde::{Deserialize, Serialize};
 

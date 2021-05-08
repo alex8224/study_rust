@@ -58,11 +58,17 @@ fn call_redis() {
         }
     }
 }
-
 fn main() {
-    call_redis();
-    use rust_a::fullindex::call_full_basic;
-    call_full_basic();
+    // call_redis();
+    let args: Vec<String> = env::args().collect();
+    println!("{}", args.len());
+    for i in 0..args.len() {
+        println!("{}", args.get(i).unwrap());
+    }
+    let g1 = args.get(1).unwrap();
+    rust_a::test_dom(g1.parse::<u32>().unwrap());
+    // use rust_a::fullindex::call_full_basic;
+    // call_full_basic();
 }
 // fn test_wry() -> wry::Result<()> {
 //     let mut app = Application::new()?;
