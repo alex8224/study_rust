@@ -1,0 +1,78 @@
+extern crate nom;
+use nom::{
+    bytes::complete::{tag, take_while_m_n},
+    combinator::map_res,
+    sequence::tuple,
+    IResult,
+};
+
+use std::fs::File;
+use std::io;
+#[derive(Debug, PartialEq)]
+pub struct Color {
+    pub red: u8,
+    pub green: u8,
+    pub blue: u8,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct JavaClassHeader {
+    magic: u32,
+    minor_versoin: u16,
+    major_versoin: u16,
+    constant_pool_count: u16,
+}
+
+fn from_hex(input: &str) -> Result<u8, std::num::ParseIntError> {
+    u8::from_str_radix(input, 16)
+}
+
+fn is_hex_digit(c: char) -> bool {
+    c.is_digit(16)
+}
+
+fn hex_primary(input: &str) -> IResult<&str, u8> {
+    map_res(take_while_m_n(2, 2, is_hex_digit), from_hex)(input)
+}
+
+fn hex_color(input: &str) -> IResult<&str, Color> {
+    let (input, _) = tag("#")(input)?;
+    let (input, (red, green, blue)) = tuple((hex_primary, hex_primary, hex_primary))(input)?;
+
+    Ok((input, Color { red, green, blue }))
+}
+
+use nom::error::*;
+use nom::number::streaming::{be_u16, be_u32};
+use nom::Err;
+use std::io::prelude::*;
+
+fn parse_magic<'a>(buf: &'a [u8]) -> Result<(&[u8], u32), Err<(&'a [u8], ErrorKind)>> {
+    let v = be_u32(&buf[..])?;
+    
+
+    //    let v:Result<(&[u8], u32), Err<(&[u8], ErrorKind)>> = be_u32(&buf[..])?;
+    //    let (i, magic) = v.unwrap();
+    //    println!("{} {}", i.len(), magic == 0xCAFEBABE);
+}
+
+#[test]
+fn parse_java_class() {
+    let mut cls_file = File::open("D:\\project\\eif-logstorage\\side-agent\\target\\classes\\com\\supcom\\storage\\agent\\Main.class").unwrap();
+    let size = cls_file.read(&mut buf).unwrap();
+}
+
+#[test]
+fn parse_color() {
+    assert_eq!(
+        hex_color("#2F14DF"),
+        Ok((
+            "",
+            Color {
+                red: 47,
+                green: 20,
+                blue: 223,
+            }
+        ))
+    );
+}

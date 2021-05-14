@@ -87,19 +87,7 @@ fn test_xml_write() {
     assert_eq!(result, expected.as_bytes());
 }
 
-use minidom::Element;
-use minidom::Error;
-use minidom::Result;
 use std::fs::File;
-
-fn split_element_name<S: AsRef<str>>(s: S) -> Result<(Option<String>, String)> {
-    let name_parts = s.as_ref().split(':').collect::<Vec<&str>>();
-    match name_parts.len() {
-        2 => Ok((Some(name_parts[0].to_owned()), name_parts[1].to_owned())),
-        1 => Ok((None, name_parts[0].to_owned())),
-        _ => Err(Error::InvalidElement),
-    }
-}
 
 use std::time::SystemTime;
 // #[test]
