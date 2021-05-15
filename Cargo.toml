@@ -29,6 +29,7 @@ syntect = "4.4"
 hyper = { version = "0.14", features = ["full"] }
 quick-xml = { version = "0.22.0", features = ["serialize"] }
 nom = "*"
+chrono = "*"
 
 [build-dependencies]
 #windows = "0.7.0"
