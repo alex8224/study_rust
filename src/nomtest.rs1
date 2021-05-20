@@ -58,8 +58,8 @@ fn parse_magic<'a>(buf: &'a [u8]) -> Result<(&[u8], u32), Err<(&'a [u8], ErrorKi
 
 #[test]
 fn parse_java_class() {
-    let mut cls_file = File::open("D:\\project\\eif-logstorage\\side-agent\\target\\classes\\com\\supcom\\storage\\agent\\Main.class").unwrap();
-    let size = cls_file.read(&mut buf).unwrap();
+    // let mut cls_file = File::open("D:\\project\\eif-logstorage\\side-agent\\target\\classes\\com\\supcom\\storage\\agent\\Main.class").unwrap();
+    // let size = cls_file.read(&mut buf).unwrap();
 }
 
 #[test]

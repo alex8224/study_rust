@@ -16,7 +16,7 @@ pub mod redis_mo;
 pub mod ui;
 pub mod xmltest;
 pub mod zen;
-pub mod nomtest;
+// pub mod nomtest;
 pub mod hessian;
 
 pub use xmltest::test_dom;
